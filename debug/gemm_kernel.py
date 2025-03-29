@@ -60,6 +60,7 @@ def gemm_kernel(
     offs_cn = pid_n * BLOCK_SIZE_N + tl.arange(0, BLOCK_SIZE_N)
     c_ptrs = c_ptr + stride_cm * offs_cm[:, None] + stride_cn * offs_cn[None, :]
     c_mask = (offs_cm[:, None] < M) & (offs_cn[None, :] < N)
+    print("c_mask", c_mask)
     C_tile_orig = tl.load(c_ptrs, mask=c_mask, other=0.0)
     # GEMM: Combine the computed partial result with the original C.
     C_tile = alpha * C_tile + beta * C_tile_orig
